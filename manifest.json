@@ -3,7 +3,7 @@
 	"name": "Obsidian Blur",
 	"version": "0.0.1",
 	"minAppVersion": "0.15.0",
-	"description": "Obsidian plugin that enables an alternate display of blocks of text.",
+	"description": "Obsidian plugin for creating obfuscated blocks of text.",
 	"author": "@gapmiss",
 	"authorUrl": "https://github.com/gapmiss",
 	"fundingUrl": "https://obsmd.io",
