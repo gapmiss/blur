@@ -2,13 +2,13 @@
 
 ![screenshot of plugin screen](assets/screen.png)
 
-Obsidian plugin for creating obfuscated blocks of text.
+Light-weight [Obsidian.md](https://obsidian.md) plugin for creating obfuscated blocks of text.
 
 3 methods are available.
 
-1. **blur** - useful for obfuscating
-2. **brick** - useful for redacting
-3. **bone** - useful for wire-framing
+1. **blur** — useful for obfuscating
+2. **brick** — useful for redacting
+3. **bone** — useful for wire-framing
 
 2 modes:
 
@@ -16,7 +16,6 @@ Obsidian plugin for creating obfuscated blocks of text.
 2. `inline`
 
 ## methods
-
 
 ### blur
 
