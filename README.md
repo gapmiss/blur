@@ -146,8 +146,8 @@ settings:
   type: variable-themed-color
   format: hsl
   opacity: true
-  default-light: 'hsla(220,19%,6%,.33)'
-  default-dark: 'hsla(220,100%,100%,.33)'
+  default-light: 'hsla(220,19%,6%,1)'
+  default-dark: 'hsla(220,100%,100%,1)'
 -
   id: obsidian-blur-brick-border-radius
   title: Brick border-radius
@@ -167,8 +167,8 @@ settings:
   type: variable-themed-color
   format: hsl
   opacity: true
-  default-light: 'hsla(220,19%,6%,.33)'
-  default-dark: 'hsla(220,100%,100%,.33)'
+  default-light: 'hsla(220,19%,6%,1)'
+  default-dark: 'hsla(220,100%,100%,1)'
 -
   id: obsidian-blur-bone-border-radius
   title: Bone border-radius

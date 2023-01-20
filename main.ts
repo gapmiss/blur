@@ -13,9 +13,10 @@ enum ComponentChoice {
 }
 
 export default class BlurPlugin extends Plugin {
-	settings: BlurPluginSettings;
 
-	async onload() {
+  settings: BlurPluginSettings;
+
+  async onload() {
 		this.registerMarkdownCodeBlockProcessor("blur", this.blurBlockHandler.bind(this, null));
 		this.registerMarkdownCodeBlockProcessor("blur-brick", this.blurBlockHandler.bind(this, null));
 		this.registerMarkdownCodeBlockProcessor("blur-bone", this.blurBlockHandler.bind(this, null));
@@ -24,14 +25,13 @@ export default class BlurPlugin extends Plugin {
 		);
 		console.log("%c Obsidian Blur Plugin loaded", 'color:lime;');
 	}
-  
-	onunload() {
+
+  onunload() {
 		console.log("%c Obsidian Blur Plugin unloaded", 'color:lime;');
 	}
-	async blurBlockHandler(type: ComponentChoice, source: string, el: HTMLElement, ctx: any): Promise<any> {
+
+  async blurBlockHandler(type: ComponentChoice, source: string, el: HTMLElement, ctx: any): Promise<any> {
     const element:any = document.createRange().createContextualFragment(source)
-		let input = element
-    // console.log(input);
     if (el.className==='block-language-blur-brick') {
       const block = el.createEl("div", {cls: "blur-brick-block"})
       let inputElement: HTMLElement
@@ -57,15 +57,14 @@ export default class BlurPlugin extends Plugin {
     else if (el.className==='block-language-blur') {
       const block = el.createEl("div", {cls: "blur-block"})
       let inputElement: HTMLElement
-      console.log(source);
       inputElement = block.createEl("div", {text: source, cls: "blur-innerblock"})
     }
 	}
 }
+
 export function buildPostProcessor(): MarkdownPostProcessor {
 	return (el) => {
     el.findAll("code").forEach((code) => {
-      console.log(code);
       let text = code.innerText.trim();
       if (text.startsWith('~[]')) {
         let blur = text.substring(3).trim();

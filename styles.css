@@ -1,4 +1,4 @@
-body {
+:root {
   --obsidian-blur-bone-border-radius:1.33em;
   --obsidian-blur-bone-line-height:1;
   --obsidian-blur-brick-border-radius:.33em;
@@ -6,27 +6,27 @@ body {
   --obsidian-blur-filter:3.3px;
 }
 body.theme-dark {
-  --obsidian-blur-brick-color:hsla(220,100%,100%,.33);
-  --obsidian-blur-bone-color:hsla(220,100%,100%,.33);
+  --obsidian-blur-brick-color:hsla(220,100%,100%,1);
+  --obsidian-blur-bone-color:hsla(220,100%,100%,1);
 }
 body.theme-light {
-  --obsidian-blur-brick-color:hsla(220,19%,6%,.33);
-  --obsidian-blur-bone-color: hsla(220,19%,6%,.33);
+  --obsidian-blur-brick-color:hsla(220,19%,6%,1);
+  --obsidian-blur-bone-color: hsla(220,19%,6%,1);
 }
 div.blur-block {
 	filter: blur(var(--obsidian-blur-filter)) !important;
 	-webkit-filter: blur(var(--obsidian-blur-filter)) !important;
-  background-color: transparent !important;
+  /* background-color: transparent !important; */
 }
 .obsidian-blur-hover div.blur-block:hover {
 	filter: blur(0px) !important;
 	-webkit-filter: blur(0px) !important;
-  background-color: transparent !important;
+  /* background-color: transparent !important; */
 }
 code.blur-inline {
   filter: blur(var(--obsidian-blur-filter)) !important;
 	-webkit-filter: blur(var(--obsidian-blur-filter)) !important;
-  background-color: transparent !important;
+  /* background-color: transparent !important; */
 }
 .obsidian-blur-hover code.blur-inline:hover {
   filter: blur(0) !important;
@@ -34,23 +34,24 @@ code.blur-inline {
 }
 code.blur-bone {
   background-color: var(--obsidian-blur-bone-color) !important;
+  color: var(--obsidian-blur-bone-color) !important;
   border-radius: var(--obsidian-blur-bone-border-radius) !important;
-  color: transparent !important;
   line-height: var(--obsidian-blur-bone-line-height) !important;
 }
 .obsidian-blur-hover code.blur-bone:hover {
   background-color: transparent !important;
-  color: inherit !important;
+  /* color: inherit !important; */
 }
 code.blur-brick {
   background-color: var(--obsidian-blur-brick-color) !important;
+  color: var(--obsidian-blur-brick-color) !important;
   border-radius: var(--obsidian-blur-brick-border-radius) !important;
-  color: transparent !important;
+  /* color: transparent !important; */
   line-height: var(--obsidian-blur-brick-line-height) !important;
 }
 .obsidian-blur-hover code.blur-brick:hover {
   background-color: transparent !important;
-  color: inherit !important;
+  /* color: inherit !important; */
 }
 .blur-bone-innerblock code.blur-bone {
   margin-right: 10px !important;
