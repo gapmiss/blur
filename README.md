@@ -1,98 +1,75 @@
-# obsidian-blur
+# Obsidian Blur Plugin
 
-![screenshot of plugin screen](assets/screen.png)
-
-Light-weight [Obsidian.md](https://obsidian.md) plugin for creating obfuscated blocks of text.
-
-3 methods are available.
-
-1. **blur** — useful for obfuscating
-2. **brick** — useful for redacting
-3. **bone** — useful for wire-framing
+Light-weight [Obsidian.md](https://obsidian.md/) plugin for creating obfuscated blocks of text.
 
 2 modes:
 
-1. `block` i.e. code fence
-2. `inline`
+1. `inline`
+2.  `block` i.e. code fence
 
-## methods
+3 methods:
 
-### blur
+1.  **blur** — useful for obfuscating
+2.  **brick** — useful for redacting
+3.  **bone** — useful for wire-framing
 
-#### block
+---
+
+## inline
+
+##### blur
+
+```markdown
+Alpha Bravo Charlie `~{Delta}` Echo Foxtrot Golt Hotel India Juliet `~{Kilo}` Lima Mike November Oscar `~{Papa}` Quebec Romeo Sierra Tango Uniform Victor `~{Whiskey}` Xray Yankee Zulu
+```
+
+##### brick
+
+```markdown
+Alpha Bravo Charlie `~[Delta]` Echo Foxtrot Golt Hotel India Juliet `~[Kilo]` Lima Mike November Oscar `~[Papa]` Quebec Romeo Sierra Tango Uniform Victor `~[Whiskey]` Xray Yankee Zulu
+```
+
+##### bone
+
+```markdown
+Alpha Bravo Charlie `~(Delta)` Echo Foxtrot Golt Hotel India Juliet `~(Kilo)` Lima Mike November Oscar `~(Papa)` Quebec Romeo Sierra Tango Uniform Victor `~(Whiskey)` Xray Yankee Zulu
+```
+
+---
+
+## block
+
+##### blur
 
 ````
 ```blur
-lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Alpha Bravo Charlie Delta Echo Foxtrot Golt Hotel India Juliet Kilo Lima Mike November Oscar Papa Quebec Romeo Sierra Tango Uniform Victor Whiskey Xray Yankee Zulu
 ```
 ````
 
-#### inline
-
-```markdown
-lorem `~{}ipsum dolor` sit amet, `~{}consectetur` adipiscing elit.
-```
-
-##### examples
-
-![screenshot of plugin screen blur](assets/blur-screen-blurs.png)
-
----
-
-### brick
-
-#### block
+##### brick
 
 ````
 ```blur-brick
-lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Alpha Bravo Charliez Delta Echo Foxtrot Golt Hotel India Juliet Kilo Lima Mike November Oscar Papa Quebec Romeo Sierra Tango Uniform Victor Whiskey Xray Yankee Zulu
 ```
 ````
 
-#### inline
-
-```markdown
-lorem `~[]ipsum dolor` sit amet, `~[]consectetur` adipiscing elit.
-```
-
-#### examples
-
-![screenshot of plugin screen brick](assets/blur-screen-bricks.png)
-
----
-
-### bone
-
-#### block
+##### bone
 
 ````
 ```blur-bone
-lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Alpha Bravo Charlie Delta Echo Foxtrot Golt Hotel India Juliet Kilo Lima Mike November Oscar Papa Quebec Romeo Sierra Tango Uniform Victor Whiskey Xray Yankee Zulu
 ```
 ````
 
-#### inline
-
-```markdown
-lorem `~()ipsum dolor` sit amet, `~()consectetur` adipiscing elit.
-```
-
-##### examples
-
-![screenshot of plugin screen bone](assets/blur-screen-bones.png)
-
 ---
 
-### inline (multiple methods)
+## results
 
+![screenshot of results in light mode](assets/results-light.png)
 
-```markdown
-lorem ipsum `~{}dolor` sit amet, consectetur `~[]adipiscing` elit. morbi bibendum commodo congue. vivamus `~()efficitur` aliquam felis, id viverra eros blandit sit amet. nam `~{}feugiat` purus ac sem aliquam, sit amet dictum dui bibendum. sed `~{}tincidunt` porttitor odio at feugiat. cras sed viverra libero. `~()suspendisse` potenti. nulla eu ullamcorper quam, in `~[]tempus nulla`. quisque `~{}accumsan` euismod finibus.
-```
-
-##### example
-
-![screenshot of plugin screen multi](assets/screen-multi-inline.png)
+![screenshot of results in dark mode](assets/results-dark.png)
 
 ---
 
@@ -103,6 +80,8 @@ lorem ipsum `~{}dolor` sit amet, consectetur `~[]adipiscing` elit. morbi bibendu
 3. move all 3 files to `/path/to/vault/.obsidian/plugins/obsidian-blur`
 4. Settings > Community plugins > reload **Installed plugins**
 5. enable plugin
+
+---
 
 ## customization
 
@@ -116,7 +95,7 @@ and
 
 ![screenshot of plugin style-settings](assets/style-settings.png)
 
-### `CSS` snippet for setting styles
+##### `CSS` snippet for setting styles
 
 The [obsidian-style-settings](https://github.com/mgmeyers/obsidian-style-settings) plugin is required for the following.
 
@@ -139,7 +118,7 @@ settings:
   id: obsidian-blur-filter
   title: Blur filter strength
   type: variable-text
-  default: 3.3px
+  default: 5px
 -
   id: obsidian-blur-brick-color
   title: Brick color
@@ -152,7 +131,7 @@ settings:
   id: obsidian-blur-brick-border-radius
   title: Brick border-radius
   type: variable-text
-  default: .33em
+  default: 1px
 -
   id: obsidian-blur-brick-line-height
   title: Brick line-height
@@ -185,3 +164,4 @@ settings:
 -
 */
 ```
+
