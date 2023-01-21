@@ -31,7 +31,6 @@ export default class BlurPlugin extends Plugin {
 	}
 
   async blurBlockHandler(type: ComponentChoice, source: string, el: HTMLElement, ctx: any): Promise<any> {
-    const element:any = document.createRange().createContextualFragment(source)
     if (el.className==='block-language-blur-brick') {
       const block = el.createEl("div", {cls: "blur-brick-block"})
       let inputElement: HTMLElement
@@ -39,7 +38,8 @@ export default class BlurPlugin extends Plugin {
       source.split(/\W+/).forEach((w:string) => {
         let word = w.trim();
         if (word !== '') {
-          inputElement.appendChild(createEl('code', {text: word, cls: "blur-brick" })); 
+          //redact w/ char '█'  &block; █
+          inputElement.appendChild(createEl('code', {text: word.replace(/[^\s]/g, '█'), cls: "blur-brick" })); 
         }
       })
     }
@@ -57,7 +57,13 @@ export default class BlurPlugin extends Plugin {
     else if (el.className==='block-language-blur') {
       const block = el.createEl("div", {cls: "blur-block"})
       let inputElement: HTMLElement
-      inputElement = block.createEl("div", {text: source, cls: "blur-innerblock"})
+      inputElement = block.createEl("div", {text: '', cls: "blur-innerblock"})
+      source.split(/\W+/).forEach((w:string) => {
+        let word = w.trim();
+        if (word !== '') {
+          inputElement.appendChild(createEl('code', {text: word, cls: "blur-inline"})); 
+        }
+      })
     }
 	}
 }
@@ -66,20 +72,24 @@ export function buildPostProcessor(): MarkdownPostProcessor {
 	return (el) => {
     el.findAll("code").forEach((code) => {
       let text = code.innerText.trim();
-      if (text.startsWith('~[]')) {
-        let blur = text.substring(3).trim();
+      if (text.startsWith('~[') && text.endsWith(']')) {
+        let part = text.substring(1);
+        let content = part.substring(part.length-1,1);
         code.addClass('blur-brick');
-        code.innerText=blur;
+        //redact w/ char '█'  &block; █
+        code.innerText=content.replace(/[^\s]/g, '█');
       }
-      else if (text.startsWith('~{}')) {
-        let blur = text.substring(3).trim();
-          code.addClass('blur-inline');
-          code.innerText=blur;
+      else if (text.startsWith("~(") && text.endsWith(')')) {
+        let part = text.substring(1);
+        let content = part.substring(part.length-1,1);
+        code.addClass('blur-bone');
+        code.innerText=content;
       }
-      else if (text.startsWith("~()")) {
-        let blur = text.substring(3).trim();
-          code.addClass('blur-bone');
-          code.innerText=blur;
+      else if (text.startsWith('~{') && text.endsWith('}')) {
+        let part = text.substring(1);
+        let content = part.substring(part.length-1,1);
+        code.addClass('blur-inline');
+        code.innerText=content;
       }
     })
   }

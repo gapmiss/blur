@@ -1,9 +1,9 @@
 :root {
   --obsidian-blur-bone-border-radius:1.33em;
   --obsidian-blur-bone-line-height:1;
-  --obsidian-blur-brick-border-radius:.33em;
+  --obsidian-blur-brick-border-radius:1px;
   --obsidian-blur-brick-line-height:1;
-  --obsidian-blur-filter:3.3px;
+  --obsidian-blur-filter:5px;
 }
 body.theme-dark {
   --obsidian-blur-brick-color:hsla(220,100%,100%,1);
@@ -16,17 +16,15 @@ body.theme-light {
 div.blur-block {
 	filter: blur(var(--obsidian-blur-filter)) !important;
 	-webkit-filter: blur(var(--obsidian-blur-filter)) !important;
-  /* background-color: transparent !important; */
 }
 .obsidian-blur-hover div.blur-block:hover {
 	filter: blur(0px) !important;
 	-webkit-filter: blur(0px) !important;
-  /* background-color: transparent !important; */
 }
 code.blur-inline {
   filter: blur(var(--obsidian-blur-filter)) !important;
 	-webkit-filter: blur(var(--obsidian-blur-filter)) !important;
-  /* background-color: transparent !important; */
+  display:inline-block !important;
 }
 .obsidian-blur-hover code.blur-inline:hover {
   filter: blur(0) !important;
@@ -37,27 +35,24 @@ code.blur-bone {
   color: var(--obsidian-blur-bone-color) !important;
   border-radius: var(--obsidian-blur-bone-border-radius) !important;
   line-height: var(--obsidian-blur-bone-line-height) !important;
+  display:inline-block !important;
 }
 .obsidian-blur-hover code.blur-bone:hover {
   background-color: transparent !important;
-  /* color: inherit !important; */
 }
 code.blur-brick {
   background-color: var(--obsidian-blur-brick-color) !important;
   color: var(--obsidian-blur-brick-color) !important;
   border-radius: var(--obsidian-blur-brick-border-radius) !important;
-  /* color: transparent !important; */
   line-height: var(--obsidian-blur-brick-line-height) !important;
+  display:inline-block !important;
 }
 .obsidian-blur-hover code.blur-brick:hover {
   background-color: transparent !important;
-  /* color: inherit !important; */
 }
 .blur-bone-innerblock code.blur-bone {
-  margin-right: 10px !important;
-  margin-block: calc(2 + var(--obsidian-blur-bone-line-height)px);
+  margin: .25em;
 }
 .blur-brick-innerblock code.blur-brick {
-  margin-right: 3px;
-  padding-right: 6px;
+  margin: .25em;
 }
