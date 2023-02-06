@@ -1,4 +1,4 @@
-# Obsidian Blur Plugin
+# Blur Plugin for Obsidian
 
 Light-weight [Obsidian.md](https://obsidian.md/) plugin for creating obfuscated blocks of text.
 
