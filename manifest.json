@@ -1,6 +1,6 @@
 {
 	"id": "obsidian-blur",
-	"name": "Obsidian Blur",
+	"name": "Blur",
 	"version": "0.0.3",
 	"minAppVersion": "0.15.0",
 	"description": "Obsidian plugin for creating obfuscated blocks of text.",
