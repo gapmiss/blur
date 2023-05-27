@@ -3,7 +3,7 @@
 	"name": "Blur",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "A plugin for creating obfuscated blocks of text.",
+	"description": "Create obfuscated blocks of text.",
 	"author": "@gapmiss",
 	"authorUrl": "https://github.com/gapmiss",
 	"isDesktopOnly": false
