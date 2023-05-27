@@ -23,11 +23,11 @@ export default class BlurPlugin extends Plugin {
 		this.registerMarkdownPostProcessor(
 			buildPostProcessor()
 		);
-		console.log("%c Obsidian Blur Plugin loaded", 'color:lime;');
+		console.log("%c Blur plugin loaded", 'color:lime;');
 	}
 
   onunload() {
-		console.log("%c Obsidian Blur Plugin unloaded", 'color:lime;');
+		console.log("%c Blur plugin unloaded", 'color:lime;');
 	}
 
   async blurBlockHandler(type: ComponentChoice, source: string, el: HTMLElement, ctx: any): Promise<any> {

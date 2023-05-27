@@ -1,7 +1,7 @@
 {
-	"name": "obsidian-blur",
-	"version": "0.0.2",
-	"description": "Obsidian plugin for creating obfuscated blocks of text.",
+	"name": "blur",
+	"version": "1.0.0",
+	"description": "A plugin for creating obfuscated blocks of text in the Obsidian.md knowledge-base application.",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",

@@ -1,0 +1,59 @@
+/* @settings
+
+name: Blur
+id: obsidian-blur
+settings:
+-
+  id: obsidian-blur-hover
+  title: Reveal obfuscated text on mouse hover
+  type: class-toggle
+  default: false
+-
+  id: obsidian-blur-filter
+  title: Blur filter strength
+  type: variable-text
+  default: 5px
+-
+  id: obsidian-blur-brick-color
+  title: Brick color
+  type: variable-themed-color
+  format: hsl
+  opacity: true
+  default-light: 'hsla(220,19%,6%,1)'
+  default-dark: 'hsla(220,100%,100%,1)'
+-
+  id: obsidian-blur-brick-border-radius
+  title: Brick border-radius
+  type: variable-text
+  default: 1px
+-
+  id: obsidian-blur-brick-line-height
+  title: Brick line-height
+  type: variable-number-slider
+  default: 1
+  min: 1
+  max: 2
+  step: .05
+- 
+  id: obsidian-blur-bone-color
+  title: Bone color
+  type: variable-themed-color
+  format: hsl
+  opacity: true
+  default-light: 'hsla(220,19%,6%,1)'
+  default-dark: 'hsla(220,100%,100%,1)'
+-
+  id: obsidian-blur-bone-border-radius
+  title: Bone border-radius
+  type: variable-text
+  default: 1.5em
+-
+  id: obsidian-blur-bone-line-height
+  title: Bone line-height
+  type: variable-number-slider
+  default: 1
+  min: 1
+  max: 2
+  step: .05
+-
+*/
