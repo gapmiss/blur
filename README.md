@@ -104,11 +104,7 @@ Custom `CSS` styles can be applied via the [obsidian-style-settings](https://git
 
 ### video demo
 
-<video style="max-width:100%;">
-  <source src="assets/demo-for-style-settings.mp4" type="video/mp4">
-</video>
-
-<video src="assets/demo-for-style-settings.mp4" data-canonical-src="assets/demo-for-style-settings.mp4" controls="controls" muted="muted" style="max-width:100%">
+<video src="https://user-images.githubusercontent.com/98914514/241434872-cd7a354b-7f90-44f5-a683-21faa6eee628.mp4" data-canonical-src="https://user-images.githubusercontent.com/98914514/241434872-cd7a354b-7f90-44f5-a683-21faa6eee628.mp4" controls="controls" muted="muted" style="max-width:100%">
 </video>
 
 
