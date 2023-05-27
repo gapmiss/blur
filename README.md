@@ -195,3 +195,24 @@ settings:
 */
 ```
 
+## development
+
+### clone this repo
+
+```bash
+cd /path/to/vault/.obsidian/plugins
+git clone https://github.com/gapmiss/blur.git
+cd blur
+```
+
+### install packages and run
+
+```bash
+npm i
+npm run dev
+```
+
+### enable plugin
+
+1.  open `Settings` → `Community plugins`
+2.  enable the `Blur` plugin.
