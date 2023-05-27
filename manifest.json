@@ -1,13 +1,7 @@
 {
-<<<<<<< HEAD
 	"id": "blur",
 	"name": "Blur",
 	"version": "1.0.0",
-=======
-	"id": "obsidian-blur",
-	"name": "Blur",
-	"version": "0.0.3",
->>>>>>> ab8b01986e55c4dc7f0a8316ed8fe073d66b35b8
 	"minAppVersion": "0.15.0",
 	"description": "A plugin for creating obfuscated blocks of text.",
 	"author": "@gapmiss",
