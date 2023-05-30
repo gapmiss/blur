@@ -1,20 +1,10 @@
 import { MarkdownPostProcessor, Plugin} from 'obsidian';
 
-interface BlurPluginSettings {
-	mySetting: string;
-}
-
-const DEFAULT_SETTINGS: BlurPluginSettings = {
-	mySetting: 'default'
-}
-
 enum ComponentChoice {
 	Default = "Default",
 }
 
 export default class BlurPlugin extends Plugin {
-
-  settings: BlurPluginSettings;
 
   async onload() {
 		this.registerMarkdownCodeBlockProcessor("blur", this.blurBlockHandler.bind(this, null));
