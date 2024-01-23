@@ -77,8 +77,8 @@ Alpha Bravo Charlie Delta Echo Foxtrot Golt Hotel India Juliet Kilo Lima Mik
 
 From Obsidian's settings or preferences:
 
-1. ~~Community Plugins > Browse~~
-2. ~~Search for "iconoir"~~
+1. Community Plugins > Browse
+2. Search for "blur"
 
 or:
 
