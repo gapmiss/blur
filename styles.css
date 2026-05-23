@@ -1,58 +1,74 @@
 :root {
-  --obsidian-blur-bone-border-radius:1.33em;
-  --obsidian-blur-bone-line-height:1;
-  --obsidian-blur-brick-border-radius:1px;
-  --obsidian-blur-brick-line-height:1;
-  --obsidian-blur-filter:5px;
+  --obsidian-blur-bone-border-radius: 1.33em;
+  --obsidian-blur-bone-line-height: 1;
+  --obsidian-blur-brick-border-radius: 1px;
+  --obsidian-blur-brick-line-height: 1;
+  --obsidian-blur-filter: 5px;
 }
+
 body.theme-dark {
-  --obsidian-blur-brick-color:hsla(220,100%,100%,1);
-  --obsidian-blur-bone-color:hsla(220,100%,100%,1);
+  --obsidian-blur-brick-color: hsla(220, 100%, 100%, 1);
+  --obsidian-blur-bone-color: hsla(220, 100%, 100%, 1);
 }
+
 body.theme-light {
-  --obsidian-blur-brick-color:hsla(220,19%,6%,1);
-  --obsidian-blur-bone-color: hsla(220,19%,6%,1);
+  --obsidian-blur-brick-color: hsla(220, 19%, 6%, 1);
+  --obsidian-blur-bone-color: hsla(220, 19%, 6%, 1);
 }
-div.blur-block {
-	filter: blur(var(--obsidian-blur-filter)) !important;
-	-webkit-filter: blur(var(--obsidian-blur-filter)) !important;
+
+body .markdown-rendered div.blur-block,
+body .markdown-preview-view div.blur-block {
+  filter: blur(var(--obsidian-blur-filter));
+  -webkit-filter: blur(var(--obsidian-blur-filter));
 }
-.obsidian-blur-hover div.blur-block:hover {
-	filter: blur(0px) !important;
-	-webkit-filter: blur(0px) !important;
+
+body .obsidian-blur-hover div.blur-block:hover {
+  filter: blur(0px);
+  -webkit-filter: blur(0px);
 }
-code.blur-inline {
-  filter: blur(var(--obsidian-blur-filter)) !important;
-	-webkit-filter: blur(var(--obsidian-blur-filter)) !important;
-  display:inline-block !important;
+
+body .markdown-rendered code.blur-inline,
+body .markdown-preview-view code.blur-inline {
+  filter: blur(var(--obsidian-blur-filter));
+  -webkit-filter: blur(var(--obsidian-blur-filter));
+  display: inline-block;
 }
-.obsidian-blur-hover code.blur-inline:hover {
-  filter: blur(0) !important;
-  -webkit-filter: blur(0px) !important;
+
+body .obsidian-blur-hover code.blur-inline:hover {
+  filter: blur(0);
+  -webkit-filter: blur(0px);
 }
-code.blur-bone {
-  background-color: var(--obsidian-blur-bone-color) !important;
-  color: var(--obsidian-blur-bone-color) !important;
-  border-radius: var(--obsidian-blur-bone-border-radius) !important;
-  line-height: var(--obsidian-blur-bone-line-height) !important;
-  display:inline-block !important;
+
+body .markdown-rendered code.blur-bone,
+body .markdown-preview-view code.blur-bone {
+  background-color: var(--obsidian-blur-bone-color);
+  color: var(--obsidian-blur-bone-color);
+  border-radius: var(--obsidian-blur-bone-border-radius);
+  line-height: var(--obsidian-blur-bone-line-height);
+  display: inline-block;
 }
-.obsidian-blur-hover code.blur-bone:hover {
-  background-color: transparent !important;
+
+body .obsidian-blur-hover code.blur-bone:hover {
+  background-color: transparent;
 }
-code.blur-brick {
-  background-color: var(--obsidian-blur-brick-color) !important;
-  color: var(--obsidian-blur-brick-color) !important;
-  border-radius: var(--obsidian-blur-brick-border-radius) !important;
-  line-height: var(--obsidian-blur-brick-line-height) !important;
-  display:inline-block !important;
+
+body .markdown-rendered code.blur-brick,
+body .markdown-preview-view code.blur-brick {
+  background-color: var(--obsidian-blur-brick-color);
+  color: var(--obsidian-blur-brick-color);
+  border-radius: var(--obsidian-blur-brick-border-radius);
+  line-height: var(--obsidian-blur-brick-line-height);
+  display: inline-block;
 }
-.obsidian-blur-hover code.blur-brick:hover {
-  background-color: transparent !important;
+
+body .obsidian-blur-hover code.blur-brick:hover {
+  background-color: transparent;
 }
+
 .blur-bone-innerblock code.blur-bone {
-  margin: .25em;
+  margin: 0.25em;
 }
+
 .blur-brick-innerblock code.blur-brick {
-  margin: .25em;
+  margin: 0.25em;
 }

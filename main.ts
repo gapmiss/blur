@@ -1,30 +1,20 @@
-import { MarkdownPostProcessor, Plugin} from 'obsidian';
-
-enum ComponentChoice {
-	Default = "Default",
-}
+import { MarkdownPostProcessor, MarkdownPostProcessorContext, Plugin } from 'obsidian';
 
 export default class BlurPlugin extends Plugin {
 
-  async onload() {
-		this.registerMarkdownCodeBlockProcessor("blur", this.blurBlockHandler.bind(this, null));
-		this.registerMarkdownCodeBlockProcessor("blur-brick", this.blurBlockHandler.bind(this, null));
-		this.registerMarkdownCodeBlockProcessor("blur-bone", this.blurBlockHandler.bind(this, null));
+  onload(): void {
+		this.registerMarkdownCodeBlockProcessor("blur", (source, el, ctx) => this.blurBlockHandler(source, el, ctx));
+		this.registerMarkdownCodeBlockProcessor("blur-brick", (source, el, ctx) => this.blurBlockHandler(source, el, ctx));
+		this.registerMarkdownCodeBlockProcessor("blur-bone", (source, el, ctx) => this.blurBlockHandler(source, el, ctx));
 		this.registerMarkdownPostProcessor(
 			buildPostProcessor()
 		);
-		console.log("%c Blur plugin loaded", 'color:lime;');
 	}
 
-  onunload() {
-		console.log("%c Blur plugin unloaded", 'color:lime;');
-	}
-
-  async blurBlockHandler(type: ComponentChoice, source: string, el: HTMLElement, ctx: any): Promise<any> {
+  blurBlockHandler(source: string, el: HTMLElement, _ctx: MarkdownPostProcessorContext): void {
     if (el.className==='block-language-blur-brick') {
-      const block = el.createEl("div", {cls: "blur-brick-block"})
-      let inputElement: HTMLElement
-      inputElement = block.createEl("div", {text: '', cls: "blur-brick-innerblock"})
+      const block = el.createDiv({cls: "blur-brick-block"});
+      const inputElement = block.createDiv({cls: "blur-brick-innerblock"});
       source.split(/\W+/).forEach((w:string) => {
         let word = w.trim();
         if (word !== '') {
@@ -34,9 +24,8 @@ export default class BlurPlugin extends Plugin {
       })
     }
     else if (el.className==='block-language-blur-bone') {
-      const block = el.createEl("div", {cls: "blur-bone-block"})
-      let inputElement: HTMLElement
-      inputElement = block.createEl("div", {text: '', cls: "blur-bone-innerblock"})
+      const block = el.createDiv({cls: "blur-bone-block"});
+      const inputElement = block.createDiv({cls: "blur-bone-innerblock"});
       source.split(/\W+/).forEach((w:string) => {
         let word = w.trim();
         if (word !== '') {
@@ -45,9 +34,8 @@ export default class BlurPlugin extends Plugin {
       })
     }
     else if (el.className==='block-language-blur') {
-      const block = el.createEl("div", {cls: "blur-block"})
-      let inputElement: HTMLElement
-      inputElement = block.createEl("div", {text: '', cls: "blur-innerblock"})
+      const block = el.createDiv({cls: "blur-block"});
+      const inputElement = block.createDiv({cls: "blur-innerblock"});
       source.split(/\W+/).forEach((w:string) => {
         let word = w.trim();
         if (word !== '') {
