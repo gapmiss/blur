@@ -22,7 +22,7 @@ body .markdown-preview-view div.blur-block {
   -webkit-filter: blur(var(--obsidian-blur-filter));
 }
 
-body .obsidian-blur-hover div.blur-block:hover {
+body.obsidian-blur-hover div.blur-block:hover {
   filter: blur(0px);
   -webkit-filter: blur(0px);
 }
@@ -34,7 +34,7 @@ body .markdown-preview-view code.blur-inline {
   display: inline-block;
 }
 
-body .obsidian-blur-hover code.blur-inline:hover {
+body.obsidian-blur-hover code.blur-inline:hover {
   filter: blur(0);
   -webkit-filter: blur(0px);
 }
@@ -48,7 +48,7 @@ body .markdown-preview-view code.blur-bone {
   display: inline-block;
 }
 
-body .obsidian-blur-hover code.blur-bone:hover {
+body.obsidian-blur-hover code.blur-bone:hover {
   background-color: transparent;
 }
 
@@ -61,7 +61,7 @@ body .markdown-preview-view code.blur-brick {
   display: inline-block;
 }
 
-body .obsidian-blur-hover code.blur-brick:hover {
+body.obsidian-blur-hover code.blur-brick:hover {
   background-color: transparent;
 }
 

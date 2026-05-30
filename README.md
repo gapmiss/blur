@@ -1,17 +1,17 @@
 # blur
 
-Light-weight [Obsidian.md](https://obsidian.md/) plugin for creating obfuscated blocks of text.
+Light-weight [Obsidian.md](https://obsidian.md/) plugin for creating obfuscated blocks of text.
 
 2 modes:
 
 1. `inline`
-2.  `block` i.e. code fence
+2. `block` i.e. code fence
 
 3 methods:
 
-1.  **blur** — useful for ==obfuscating==
-2.  **brick** — useful for ==redacting==
-3.  **bone** — useful for ==wire-framing==
+1. **blur** — useful for ==obfuscating== (text preserved, reveals on hover)
+2. **brick** — useful for ==redacting== (text replaced with █ blocks, does not reveal)
+3. **bone** — useful for ==wire-framing== (text preserved, reveals on hover)
 
 ---
 
@@ -43,7 +43,7 @@ Alpha Bravo Charlie `~(Delta)` Echo Foxtrot Golt Hotel India Juliet `~(Kilo)` Li
 
 ````
 ```blur
-Alpha Bravo Charlie Delta Echo Foxtrot Golt Hotel India Juliet Kilo Lima Mike November Oscar Papa Quebec Romeo Sierra Tango Uniform Victor Whiskey Xray Yankee Zulu
+Alpha Bravo Charlie Delta Echo Foxtrot Golt Hotel India Juliet Kilo Lima Mike November Oscar Papa Quebec Romeo Sierra Tango Uniform Victor Whiskey Xray Yankee Zulu
 ```
 ````
 
@@ -51,7 +51,7 @@ Alpha Bravo Charlie Delta Echo Foxtrot Golt Hotel India Juliet Kilo Lima Mik
 
 ````
 ```blur-brick
-Alpha Bravo Charliez Delta Echo Foxtrot Golt Hotel India Juliet Kilo Lima Mike November Oscar Papa Quebec Romeo Sierra Tango Uniform Victor Whiskey Xray Yankee Zulu
+Alpha Bravo Charliez Delta Echo Foxtrot Golt Hotel India Juliet Kilo Lima Mike November Oscar Papa Quebec Romeo Sierra Tango Uniform Victor Whiskey Xray Yankee Zulu
 ```
 ````
 
@@ -59,7 +59,7 @@ Alpha Bravo Charliez Delta Echo Foxtrot Golt Hotel India Juliet Kilo Lima Mi
 
 ````
 ```blur-bone
-Alpha Bravo Charlie Delta Echo Foxtrot Golt Hotel India Juliet Kilo Lima Mike November Oscar Papa Quebec Romeo Sierra Tango Uniform Victor Whiskey Xray Yankee Zulu
+Alpha Bravo Charlie Delta Echo Foxtrot Golt Hotel India Juliet Kilo Lima Mike November Oscar Papa Quebec Romeo Sierra Tango Uniform Victor Whiskey Xray Yankee Zulu
 ```
 ````
 
@@ -85,16 +85,22 @@ or:
 1. download the latest [release archive](https://github.com/gapmiss/blur/releases/download/1.0.0/blur.zip)
 2. uncompress the downloaded archive
 3. move the `blur` folder to `/path/to/vault/.obsidian/plugins/` 
-4.  Settings > Community plugins > reload **Installed plugins**
-5.  enable plugin
+4. Settings > Community plugins > reload **Installed plugins**
+5. enable plugin
 
 or:
 
-1.  download `main.js`, `manifest.json` & `styles.css`
-2.  create a new folder `/path/to/vault/.obsidian/plugins/blur`
-3.  move all 3 files to `/path/to/vault/.obsidian/plugins/blur`
-4.  Settings > Community plugins > reload **Installed plugins**
-5.  enable plugin
+1. download `main.js`, `manifest.json` & `styles.css`
+2. create a new folder `/path/to/vault/.obsidian/plugins/blur`
+3. move all 3 files to `/path/to/vault/.obsidian/plugins/blur`
+4. Settings > Community plugins > reload **Installed plugins**
+5. enable plugin
+
+---
+
+## settings
+
+The plugin includes a **Reveal on hover** toggle in Settings > Blur. When enabled, hovering over blurred or boned text will reveal the original content. Note: brick text does not reveal on hover since the original text is replaced with █ blocks.
 
 ---
 
@@ -111,10 +117,8 @@ Custom `CSS` styles can be applied via the [obsidian-style-settings](https://git
 ### effects
 
 1. **blur** — `filter`
-2. **brick** —`line-height`, `background-color`, `border-radius`
+2. **brick** — `line-height`, `background-color`, `border-radius`
 3. **bone** — `line-height`, `background-color`, `border-radius`
-and
-4. **editor** — `toggle` to reveal obfuscated text on mouse hover
 
 ![screenshot of plugin style-settings](assets/style-settings.png)
 
@@ -139,11 +143,6 @@ then
 name: Blur Plugin
 id: obsidian-blur
 settings:
--
-  id: obsidian-blur-hover
-  title: Reveal obfuscated text on mouse hover
-  type: class-toggle
-  default: false
 -
   id: obsidian-blur-filter
   title: Blur filter strength
@@ -214,5 +213,5 @@ npm run dev
 
 ### enable plugin
 
-1.  open `Settings` → `Community plugins`
-2.  enable the `Blur` plugin.
+1. open `Settings` → `Community plugins`
+2. enable the `Blur` plugin.
