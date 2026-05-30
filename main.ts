@@ -130,7 +130,8 @@ export default class BlurPlugin extends Plugin {
 	}
 
 	onunload(): void {
-		activeDocument.body.removeClass('obsidian-blur-hover');
+		// eslint-disable-next-line obsidianmd/prefer-active-doc -- must target main window
+		document.body.removeClass('obsidian-blur-hover');
 	}
 
 	async loadSettings(): Promise<void> {
@@ -142,7 +143,13 @@ export default class BlurPlugin extends Plugin {
 	}
 
 	applyHoverClass(): void {
-		activeDocument.body.toggleClass('obsidian-blur-hover', this.settings.revealOnHover);
+		// eslint-disable-next-line obsidianmd/prefer-active-doc -- must target main window, not settings window
+		const body = document.body;
+		if (this.settings.revealOnHover) {
+			body.addClass('obsidian-blur-hover');
+		} else {
+			body.removeClass('obsidian-blur-hover');
+		}
 	}
 
 	blurBlockHandler(source: string, el: HTMLElement, _ctx: MarkdownPostProcessorContext): void {
