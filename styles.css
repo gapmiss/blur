@@ -72,3 +72,40 @@ body.obsidian-blur-hover code.blur-brick:hover {
 .blur-brick-innerblock code.blur-brick {
   margin: 0.25em;
 }
+
+/* Live Preview (CM6 editor) styles */
+.cm-editor .blur-widget code.blur-inline {
+  filter: blur(var(--obsidian-blur-filter));
+  -webkit-filter: blur(var(--obsidian-blur-filter));
+  display: inline-block;
+}
+
+body.obsidian-blur-hover .cm-editor .blur-widget code.blur-inline:hover {
+  filter: blur(0);
+  -webkit-filter: blur(0);
+}
+
+.cm-editor .blur-widget code.blur-bone {
+  background-color: var(--obsidian-blur-bone-color);
+  color: var(--obsidian-blur-bone-color);
+  border-radius: var(--obsidian-blur-bone-border-radius);
+  line-height: var(--obsidian-blur-bone-line-height);
+  display: inline-block;
+  padding: 0.15em 0.4em;
+}
+
+body.obsidian-blur-hover .cm-editor .blur-widget code.blur-bone:hover {
+  background-color: transparent;
+}
+
+.cm-editor .blur-widget code.blur-brick {
+  background-color: var(--obsidian-blur-brick-color);
+  color: var(--obsidian-blur-brick-color);
+  border-radius: var(--obsidian-blur-brick-border-radius);
+  line-height: var(--obsidian-blur-brick-line-height);
+  display: inline-block;
+}
+
+body.obsidian-blur-hover .cm-editor .blur-widget code.blur-brick:hover {
+  background-color: transparent;
+}
