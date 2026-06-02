@@ -1,6 +1,33 @@
-# blur
+## Blur
 
 Light-weight [Obsidian.md](https://obsidian.md/) plugin for creating obfuscated blocks of text.
+
+### Installation
+
+[Install from community.obsidian.md](https://community.obsidian.md/plugins/blur)
+
+From Obsidian's settings or preferences:
+
+1. Community Plugins > Browse
+2. Search for "Blur"
+
+Manually:
+
+1. download the latest [release](https://github.com/gapmiss/blur/releases/latest) archive
+2. uncompress the downloaded archive
+3. move the `blur` folder to `/path/to/vault/.obsidian/plugins/` 
+4.  Settings > Community plugins > reload **Installed plugins**
+5.  enable plugin
+
+or:
+
+1.  download `main.js`, `manifest.json` & `styles.css` from the latest [release](https://github.com/gapmiss/blur/releases/latest)
+2.  create a new folder `/path/to/vault/.obsidian/plugins/blur`
+3.  move all 3 files to `/path/to/vault/.obsidian/plugins/blur`
+4.  Settings > Community plugins > reload **Installed plugins**
+5.  enable plugin
+
+### Usage
 
 2 modes:
 
@@ -15,7 +42,7 @@ Light-weight [Obsidian.md](https://obsidian.md/) plugin for creating obfuscated 
 
 ---
 
-## inline
+#### inline
 
 ##### blur
 
@@ -37,7 +64,7 @@ Alpha Bravo Charlie `~(Delta)` Echo Foxtrot Golt Hotel India Juliet `~(Kilo)` Li
 
 ---
 
-## block
+#### block
 
 ##### blur
 
@@ -65,7 +92,7 @@ Alpha Bravo Charlie Delta Echo Foxtrot Golt Hotel India Juliet Kilo Lima Mike No
 
 ---
 
-## results
+#### results
 
 ![screenshot of results in light mode](assets/results-light.png)
 
@@ -73,48 +100,23 @@ Alpha Bravo Charlie Delta Echo Foxtrot Golt Hotel India Juliet Kilo Lima Mike No
 
 ---
 
-## plugin installation
-
-From Obsidian's settings or preferences:
-
-1. Community Plugins > Browse
-2. Search for "blur"
-
-or:
-
-1. download the latest [release archive](https://github.com/gapmiss/blur/releases/download/1.0.0/blur.zip)
-2. uncompress the downloaded archive
-3. move the `blur` folder to `/path/to/vault/.obsidian/plugins/` 
-4. Settings > Community plugins > reload **Installed plugins**
-5. enable plugin
-
-or:
-
-1. download `main.js`, `manifest.json` & `styles.css`
-2. create a new folder `/path/to/vault/.obsidian/plugins/blur`
-3. move all 3 files to `/path/to/vault/.obsidian/plugins/blur`
-4. Settings > Community plugins > reload **Installed plugins**
-5. enable plugin
-
----
-
-## settings
+### settings
 
 The plugin includes a **Reveal on hover** toggle in Settings > Blur. When enabled, hovering over blurred or boned text will reveal the original content. Note: brick text does not reveal on hover since the original text is replaced with █ blocks.
 
 ---
 
-## customization
+### customization
 
 Custom `CSS` styles can be applied via the [obsidian-style-settings](https://github.com/mgmeyers/obsidian-style-settings) plugin.
 
-### video demo
+#### video demo
 
 <video src="https://user-images.githubusercontent.com/98914514/241434872-cd7a354b-7f90-44f5-a683-21faa6eee628.mp4" data-canonical-src="https://user-images.githubusercontent.com/98914514/241434872-cd7a354b-7f90-44f5-a683-21faa6eee628.mp4" controls="controls" muted="muted" style="max-width:100%">
 </video>
 
 
-### effects
+#### effects
 
 1. **blur** — `filter`
 2. **brick** — `line-height`, `background-color`, `border-radius`
@@ -194,9 +196,9 @@ settings:
 */
 ```
 
-## development
+### development
 
-### clone this repo
+#### clone this repo
 
 ```bash
 cd /path/to/vault/.obsidian/plugins
@@ -204,14 +206,14 @@ git clone https://github.com/gapmiss/blur.git
 cd blur
 ```
 
-### install packages and run
+#### install packages and run
 
 ```bash
 npm i
 npm run dev
 ```
 
-### enable plugin
+#### enable plugin
 
 1. open `Settings` → `Community plugins`
 2. enable the `Blur` plugin.
