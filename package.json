@@ -21,7 +21,7 @@
 		"@codemirror/view": "^6.38.6",
 		"@types/node": "^22.0.0",
 		"@typescript-eslint/parser": "^8.0.0",
-		"esbuild": "^0.24.0",
+		"esbuild": "^0.28.0",
 		"eslint": "^9.0.0",
 		"eslint-plugin-obsidianmd": "^0.3.0",
 		"obsidian": "latest",
