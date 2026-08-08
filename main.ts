@@ -1,4 +1,4 @@
-import { MarkdownPostProcessor, MarkdownPostProcessorContext, Plugin, PluginSettingTab, Setting, App, editorLivePreviewField } from 'obsidian';
+import { MarkdownPostProcessor, MarkdownPostProcessorContext, Plugin, PluginSettingTab, App, editorLivePreviewField, SettingDefinition } from 'obsidian';
 import { Decoration, DecorationSet, EditorView, WidgetType, ViewPlugin, ViewUpdate } from '@codemirror/view';
 import { RangeSetBuilder } from '@codemirror/state';
 
@@ -217,19 +217,21 @@ class BlurSettingTab extends PluginSettingTab {
 		this.plugin = plugin;
 	}
 
-	display(): void {
-		const { containerEl } = this;
-		containerEl.empty();
-
-		new Setting(containerEl)
-			.setName('Reveal on hover')
-			.setDesc('Reveal obfuscated text when hovering with the mouse')
-			.addToggle(toggle => toggle
-				.setValue(this.plugin.settings.revealOnHover)
-				.onChange(async (value) => {
-					this.plugin.settings.revealOnHover = value;
-					await this.plugin.saveSettings();
-					this.plugin.applyHoverClass();
-				}));
+	getSettingDefinitions(): SettingDefinition[] {
+		return [
+			{
+				name: 'Reveal on hover',
+				desc: 'Reveal obfuscated text when hovering with the mouse.',
+				render: (setting) => {
+					setting.addToggle(toggle => toggle
+						.setValue(this.plugin.settings.revealOnHover)
+						.onChange(async (value) => {
+							this.plugin.settings.revealOnHover = value;
+							await this.plugin.saveSettings();
+							this.plugin.applyHoverClass();
+						}));
+				},
+			},
+		];
 	}
 }
