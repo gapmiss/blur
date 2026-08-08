@@ -1,5 +1,5 @@
 import { readFileSync, writeFileSync } from 'fs';
-import { execSync } from 'child_process';
+import { execSync, execFileSync } from 'child_process';
 import path from 'path';
 
 /**
@@ -75,7 +75,7 @@ const updatePackageVersion = (versionType) => {
   packageData.version = newVersion;
   writeFileSync(packagePath, JSON.stringify(packageData, null, '\t') + '\n');
   
-  console.log(`📦 Updated package.json version: ${currentVersion} → ${newVersion}`);
+  console.log('📦 Updated package.json version: ' + currentVersion + ' → ' + newVersion);
   return newVersion;
 };
 
@@ -92,7 +92,7 @@ const updateManifestVersion = (newVersion) => {
   manifestData.version = newVersion;
   
   writeFileSync(manifestPath, JSON.stringify(manifestData, null, '\t') + '\n');
-  console.log(`📋 Updated manifest.json version: ${currentVersion} → ${newVersion}`);
+  console.log('📋 Updated manifest.json version: ' + currentVersion + ' → ' + newVersion);
 };
 
 /**
@@ -111,7 +111,7 @@ const updateVersionsVersion = (previousVersion, newVersion, minAppVersion) => {
   versionsData[newVersion] = minAppVersion;
   
   writeFileSync(versionsPath, JSON.stringify(versionsData, null, '\t') + '\n');
-  console.log(`📋 Updated versions.json version: ${previousVersion} → ${newVersion}`);
+  console.log('📋 Updated versions.json version: ' + previousVersion + ' → ' + newVersion);
 };
 
 /**
@@ -207,12 +207,12 @@ const createGitCommitAndTag = (version) => {
     
     // Create commit
     const commitMessage = `chore: release ${version}`;
-    execSync(`git commit -m "${commitMessage}"`, { stdio: 'inherit' });
+    execFileSync('git', ['commit', '-m', commitMessage], { stdio: 'inherit' });
     console.log(`✅ Commit created: ${commitMessage}`);
     
     // Create tag
     const tagName = `${version}`;
-    execSync(`git tag -a ${tagName} -m "Release ${tagName}"`, { stdio: 'inherit' });
+    execFileSync('git', ['tag', '-a', tagName, '-m', `Release ${tagName}`], { stdio: 'inherit' });
     console.log(`🏷️ Tag created: ${tagName}`);
     
     // Push changes
