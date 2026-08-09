@@ -29,12 +29,34 @@ jobs:
       - name: Build
         run: npm run build
 
+      # styles.css is optional: not every plugin ships one. Build the artifact
+      # list here so the attest and release steps below work unchanged in both
+      # kinds of repository.
+      - name: Collect release artifacts
+        id: artifacts
+        run: |
+          if [ -f styles.css ]; then
+            has_styles=true
+          else
+            has_styles=false
+            echo "::notice::No styles.css in this plugin; skipping its attestation and upload."
+          fi
+          echo "has_styles=$has_styles" >> "$GITHUB_OUTPUT"
+          {
+            echo "files<<ARTIFACTS_EOF"
+            echo "main.js"
+            echo "manifest.json"
+            if [ "$has_styles" = true ]; then echo "styles.css"; fi
+            echo "ARTIFACTS_EOF"
+          } >> "$GITHUB_OUTPUT"
+
       - name: Attest main.js
         uses: actions/attest-build-provenance@v2
         with:
           subject-path: main.js
 
       - name: Attest styles.css
+        if: steps.artifacts.outputs.has_styles == 'true'
         uses: actions/attest-build-provenance@v2
         with:
           subject-path: styles.css
@@ -42,8 +64,6 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          files: |
-            main.js
-            manifest.json
-            styles.css
+          files: ${{ steps.artifacts.outputs.files }}
+          fail_on_unmatched_files: true
           generate_release_notes: true

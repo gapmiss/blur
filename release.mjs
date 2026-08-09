@@ -1,10 +1,10 @@
 import { readFileSync, writeFileSync } from 'fs';
-import { execSync } from 'child_process';
+import { execSync, execFileSync } from 'child_process';
 import path from 'path';
 
 /**
  * Version Update and Deployment Automation Script
- * 
+ *
  * 1. Update version in package.json
  * 2. Synchronize version in manifest.json, versions.json
  * 3. Run build
@@ -20,14 +20,37 @@ const VERSION_TYPES = {
   MAJOR: 'major'
 };
 
+// Strict X.Y.Z, no prefix, no prerelease or build suffix.
+const SEMVER_PATTERN = /^\d+\.\d+\.\d+$/;
+
 // Default settings
 const DEFAULT_VERSION_TYPE = VERSION_TYPES.PATCH;
-const RELEASE_FILES = ['main.js', 'manifest.json', 'styles.css'];
 const MIN_APP_VERSION = JSON.parse(readFileSync(path.resolve(process.cwd(), 'manifest.json'), 'utf8')).minAppVersion;
 
 // Store original versions for rollback if needed
 let originalPackageVersion = '';
 let originalManifestVersion = '';
+
+// Track exactly what needs undoing, so rollback never guesses.
+let addedVersionsKey = '';   // key this run wrote into versions.json
+let createdCommit = false;   // git commit succeeded this run
+let createdTag = '';         // git tag created this run
+
+/**
+ * Validates that a version string is strictly X.Y.Z.
+ * Without this, `1.0.0-beta.1` silently becomes `1.0.NaN` and is written
+ * to package.json, manifest.json, versions.json, and the git tag.
+ * @param {string} version - Version string to validate
+ * @param {string} source - Where the version came from, for the error message
+ */
+const assertValidVersion = (version, source) => {
+  if (typeof version !== 'string' || !SEMVER_PATTERN.test(version)) {
+    console.error(`❌ Invalid version in ${source}: ${JSON.stringify(version)}`);
+    console.log('Expected a strict semver release version: MAJOR.MINOR.PATCH (e.g. 1.0.11).');
+    console.log('Prefixes ("v1.0.0") and prerelease or build suffixes ("1.0.0-beta.1") are not supported.');
+    process.exit(1);
+  }
+};
 
 /**
  * Updates version value from the version string.
@@ -37,7 +60,7 @@ let originalManifestVersion = '';
  */
 const updateVersion = (version, type = DEFAULT_VERSION_TYPE) => {
   const [major, minor, patch] = version.split('.').map(Number);
-  
+
   switch (type) {
     case VERSION_TYPES.MAJOR:
       return `${major + 1}.0.0`;
@@ -56,6 +79,7 @@ const updateVersion = (version, type = DEFAULT_VERSION_TYPE) => {
 const getPreviousVersion = () => {
   const manifestPath = path.resolve(process.cwd(), 'manifest.json');
   const manifestData = JSON.parse(readFileSync(manifestPath, 'utf8'));
+  assertValidVersion(manifestData.version, 'manifest.json');
   return manifestData.version;
 }
 
@@ -67,14 +91,16 @@ const getPreviousVersion = () => {
 const updatePackageVersion = (versionType) => {
   const packagePath = path.resolve(process.cwd(), 'package.json');
   const packageData = JSON.parse(readFileSync(packagePath, 'utf8'));
-  
+
   const currentVersion = packageData.version;
+  assertValidVersion(currentVersion, 'package.json');
   originalPackageVersion = currentVersion; // Store original version for possible rollback
   const newVersion = updateVersion(currentVersion, versionType);
-  
+  assertValidVersion(newVersion, 'the computed new version');
+
   packageData.version = newVersion;
   writeFileSync(packagePath, JSON.stringify(packageData, null, '\t') + '\n');
-  
+
   console.log(`📦 Updated package.json version: ${currentVersion} → ${newVersion}`);
   return newVersion;
 };
@@ -86,11 +112,11 @@ const updatePackageVersion = (versionType) => {
 const updateManifestVersion = (newVersion) => {
   const manifestPath = path.resolve(process.cwd(), 'manifest.json');
   const manifestData = JSON.parse(readFileSync(manifestPath, 'utf8'));
-  
+
   const currentVersion = manifestData.version;
   originalManifestVersion = currentVersion; // Store original version for possible rollback
   manifestData.version = newVersion;
-  
+
   writeFileSync(manifestPath, JSON.stringify(manifestData, null, '\t') + '\n');
   console.log(`📋 Updated manifest.json version: ${currentVersion} → ${newVersion}`);
 };
@@ -99,18 +125,21 @@ const updateManifestVersion = (newVersion) => {
  * Updates version information in versions.json file.
  * @param {string} previousVersion - Previous version
  * @param {string} newVersion - Version to update
+ * @param {string} minAppVersion - Minimum Obsidian version for this release
  */
 const updateVersionsVersion = (previousVersion, newVersion, minAppVersion) => {
   const versionsPath = path.resolve(process.cwd(), 'versions.json');
   const versionsData = JSON.parse(readFileSync(versionsPath, 'utf8'));
-  
-  const manifestPath = path.resolve(process.cwd(), 'manifest.json');
-  const manifestData = JSON.parse(readFileSync(manifestPath, 'utf8'));
 
-  const currentVersion = manifestData.version;
+  // Only record the key for rollback if we are actually adding it. Overwriting
+  // an existing entry must not be undone by deleting that entry.
+  const alreadyPresent = Object.prototype.hasOwnProperty.call(versionsData, newVersion);
   versionsData[newVersion] = minAppVersion;
-  
+
   writeFileSync(versionsPath, JSON.stringify(versionsData, null, '\t') + '\n');
+  if (!alreadyPresent) {
+    addedVersionsKey = newVersion;
+  }
   console.log(`📋 Updated versions.json version: ${previousVersion} → ${newVersion}`);
 };
 
@@ -130,6 +159,38 @@ const buildProject = () => {
 };
 
 /**
+ * Undo the git commit and tag created by this run, if any.
+ * Runs before the file rollback so the working tree ends up matching the
+ * restored JSON files instead of stranding a release commit locally.
+ */
+const rollbackGit = () => {
+  if (createdTag) {
+    try {
+      execFileSync('git', ['tag', '-d', createdTag], { stdio: 'inherit' });
+      console.log(`♻️ Deleted tag: ${createdTag}`);
+      createdTag = '';
+    } catch (error) {
+      console.error(`❌ Failed to delete tag ${createdTag}. Remove it manually: git tag -d ${createdTag}`);
+      console.error('   ', error.message);
+    }
+  }
+
+  if (createdCommit) {
+    try {
+      // --mixed (the default) also clears the index. --soft would leave the
+      // bumped versions staged, so the tree would still look dirty after the
+      // file rollback and the next run would fail the clean-tree check.
+      execFileSync('git', ['reset', '--mixed', 'HEAD~1'], { stdio: 'inherit' });
+      console.log('♻️ Undid release commit (git reset --mixed HEAD~1)');
+      createdCommit = false;
+    } catch (error) {
+      console.error('❌ Failed to undo the release commit. Undo it manually: git reset --mixed HEAD~1');
+      console.error('   ', error.message);
+    }
+  }
+};
+
+/**
  * Rollback version changes if the release process fails
  */
 const rollbackVersions = () => {
@@ -138,7 +199,7 @@ const rollbackVersions = () => {
       const packagePath = path.resolve(process.cwd(), 'package.json');
       const packageData = JSON.parse(readFileSync(packagePath, 'utf8'));
       const currentVersion = packageData.version;
-      
+
       packageData.version = originalPackageVersion;
       writeFileSync(packagePath, JSON.stringify(packageData, null, '\t') + '\n');
       console.log(`♻️ Rolled back package.json version: ${currentVersion} → ${originalPackageVersion}`);
@@ -147,21 +208,19 @@ const rollbackVersions = () => {
     }
   }
 
-  if (originalManifestVersion) {
+  // Only remove the exact key this run added. The previous version of this
+  // script deleted whatever key happened to be last, which could drop an
+  // unrelated historical entry.
+  if (addedVersionsKey) {
     try {
-      const manifestPath = path.resolve(process.cwd(), 'manifest.json');
-      const manifestData = JSON.parse(readFileSync(manifestPath, 'utf8'));
-      const currentVersion = manifestData.version;
-      
       const versionsPath = path.resolve(process.cwd(), 'versions.json');
       const versionsData = JSON.parse(readFileSync(versionsPath, 'utf8'));
-      
-      // remove last version from JSON
-      let keys = Object.keys(versionsData)
-      delete versionsData[keys[keys.length-1]]
+
+      delete versionsData[addedVersionsKey];
 
       writeFileSync(versionsPath, JSON.stringify(versionsData, null, '\t') + '\n');
-      console.log(`♻️ Rolled back versions.json version: ${currentVersion} → ${originalManifestVersion}`);
+      console.log(`♻️ Removed versions.json entry: ${addedVersionsKey}`);
+      addedVersionsKey = '';
     } catch (error) {
       console.error('❌ Failed to rollback versions.json version:', error.message);
     }
@@ -172,7 +231,7 @@ const rollbackVersions = () => {
       const manifestPath = path.resolve(process.cwd(), 'manifest.json');
       const manifestData = JSON.parse(readFileSync(manifestPath, 'utf8'));
       const currentVersion = manifestData.version;
-      
+
       manifestData.version = originalManifestVersion;
       writeFileSync(manifestPath, JSON.stringify(manifestData, null, '\t') + '\n');
       console.log(`♻️ Rolled back manifest.json version: ${currentVersion} → ${originalManifestVersion}`);
@@ -180,8 +239,6 @@ const rollbackVersions = () => {
       console.error('❌ Failed to rollback manifest.json version:', error.message);
     }
   }
-
-
 };
 
 /**
@@ -192,32 +249,36 @@ const createGitCommitAndTag = (version) => {
   try {
     // Stage changed files
     try {
-      execSync('git add package.json manifest.json versions.json', { stdio: 'inherit' });
+      execFileSync('git', ['add', 'package.json', 'manifest.json', 'versions.json'], { stdio: 'inherit' });
     } catch (error) {
       console.error('❌ Failed to stage package.json, versions.json and manifest.json:', error.message);
       return false;
     }
 
-    // Try to stage release files
-    try {
-      execSync(`git add ${RELEASE_FILES.join(' ')}`, { stdio: 'inherit' });
-    } catch (error) {
-      console.warn('⚠️ Note: Some release files could not be staged. This may be normal if they are gitignored.');
-    }
-    
+    // The release artifacts (main.js, styles.css) are deliberately not staged
+    // here. GitHub Actions checks out the tag, runs the build, and attaches
+    // them to the release, so main.js is gitignored and styles.css is ordinary
+    // committed source that a release never modifies.
+
     // Create commit
     const commitMessage = `chore: release ${version}`;
-    execSync(`git commit -m "${commitMessage}"`, { stdio: 'inherit' });
+    execFileSync('git', ['commit', '-m', commitMessage], { stdio: 'inherit' });
+    createdCommit = true;
     console.log(`✅ Commit created: ${commitMessage}`);
-    
+
     // Create tag
     const tagName = `${version}`;
-    execSync(`git tag -a ${tagName} -m "Release ${tagName}"`, { stdio: 'inherit' });
+    execFileSync('git', ['tag', '-a', tagName, '-m', `Release ${tagName}`], { stdio: 'inherit' });
+    createdTag = tagName;
     console.log(`🏷️ Tag created: ${tagName}`);
-    
+
     // Push changes
     execSync('git push', { stdio: 'inherit' });
     execSync('git push --tags', { stdio: 'inherit' });
+
+    // Past this point the release is public and rollback is no longer safe.
+    createdCommit = false;
+    createdTag = '';
     console.log('🚀 Changes pushed to GitHub');
     console.log('📦 GitHub Actions will create the release with artifact attestations.');
     return true; // Successfully created commit, tag, and pushed
@@ -243,12 +304,20 @@ const isGitWorkingTreeClean = () => {
 };
 
 /**
+ * Undo everything this run changed, git first, then the JSON files.
+ */
+const rollbackAll = () => {
+  rollbackGit();
+  rollbackVersions();
+};
+
+/**
  * Main function
  */
 const main = () => {
   let success = true;
   let newVersion = '';
-  
+
   try {
     // Check for uncommitted changes
     if (!isGitWorkingTreeClean()) {
@@ -256,11 +325,11 @@ const main = () => {
       console.log('Please commit or stash your changes before running the release script.');
       process.exit(1);
     }
-    
+
     // Check command line arguments
     const args = process.argv.slice(2);
     const versionType = args[0] || DEFAULT_VERSION_TYPE;
-    
+
     if (!Object.values(VERSION_TYPES).includes(versionType)) {
       console.error(`❌ Invalid version type: ${versionType}`);
       console.log(`Valid options: ${Object.values(VERSION_TYPES).join(', ')}`);
@@ -268,7 +337,7 @@ const main = () => {
     }
 
     let previousVersion = getPreviousVersion()
-    
+
     // Step 1: Update package.json version
     try {
       newVersion = updatePackageVersion(versionType);
@@ -276,7 +345,7 @@ const main = () => {
       console.error('❌ Failed to update package.json version:', error.message);
       success = false;
     }
-    
+
     // Step 2: Update manifest.json version
     if (success) {
       try {
@@ -286,7 +355,7 @@ const main = () => {
         success = false;
       }
     }
-        
+
     // Step 2.5: Update versions.json version
     if (success) {
       try {
@@ -296,7 +365,7 @@ const main = () => {
         success = false;
       }
     }
-    
+
     // Step 3: Build the project
     if (success) {
       if (!buildProject()) {
@@ -304,7 +373,7 @@ const main = () => {
         success = false;
       }
     }
-    
+
     // Step 4: Git operations
     if (success) {
       if (!createGitCommitAndTag(newVersion)) {
@@ -312,18 +381,18 @@ const main = () => {
         success = false;
       }
     }
-    
+
     // Check overall success
     if (success) {
       console.log(`\n🎉 Release ${newVersion} completed successfully!`);
     } else {
-      console.error('❌ Release process failed. Rolling back version changes...');
-      rollbackVersions();
+      console.error('❌ Release process failed. Rolling back changes...');
+      rollbackAll();
       process.exit(1);
     }
   } catch (error) {
     console.error('❌ Unexpected error during release process:', error.message);
-    rollbackVersions();
+    rollbackAll();
     process.exit(1);
   }
 };
