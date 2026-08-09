@@ -1,3 +1,9 @@
+/*
+ * Brick color and Bone color default to the colors this plugin used before
+ * version 1.0.12. Without them, the bars follow the theme's own text color.
+ * Setting either one pins that bar to a fixed color on every theme.
+ */
+
 /* @settings
 
 name: Blur

@@ -90,6 +90,8 @@ Alpha Bravo Charlie Delta Echo Foxtrot Golt Hotel India Juliet Kilo Lima Mike No
 ```
 ````
 
+Inside a code block, punctuation and line breaks are preserved. `Don't tell: 555-1234 (secret).` reveals exactly as written, and a block spanning several lines keeps those lines.
+
 ---
 
 #### results
@@ -109,6 +111,8 @@ The plugin includes a **Reveal on hover** toggle in Settings > Blur. When enable
 ### customization
 
 Custom `CSS` styles can be applied via the [obsidian-style-settings](https://github.com/mgmeyers/obsidian-style-settings) plugin.
+
+By default, brick and bone bars use the theme's own text color (`--text-normal`), so they match whatever theme you run. Setting **Brick color** or **Bone color** below pins them to a fixed color instead. The `default-light` and `default-dark` values in the snippet are the colors the plugin used before version 1.0.12 — they are kept so existing setups look unchanged, not because they match every theme.
 
 #### video demo
 
